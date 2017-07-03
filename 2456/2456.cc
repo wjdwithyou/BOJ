@@ -1,79 +1,75 @@
 #include <iostream>
 
-typedef struct Node {
-    int base[4];
-    int no;
+struct Person {
+    int cnt[4];
+    int num;
     int sum;
-}Node;
+};
+
+int _print(Person*[], int);
 
 int main() {
-    Node candidate[4] = { 0, };
-    Node temp;
-    int n, t, idx, k;
+    Person* person[4];
+    int n, t, idx;
     
-    for (int i = 1; i <= 3; ++i) {
-        candidate[i].no = i;
+    for (int i = 1; i < 4; ++i) {
+        person[i] = static_cast<Person*>(malloc(sizeof(Person)));
+        
+        for (int j = 1; j < 4; ++j) {
+            person[i]->cnt[j] = 0;
+        }
+        
+        person[i]->num = i;
+        person[i]->sum = 0;
     }
     
     scanf("%d", &n);
     
     for (int i = 0; i < n; ++i) {
-        for (int j = 1; j <= 3; ++j) {
+        for (int j = 1; j < 4; ++j) {
             scanf("%d", &t);
             
-            ++candidate[j].base[t];
-            candidate[j].sum += t;
+            person[j]->sum += t;
+            ++person[j]->cnt[t];
         }
     }
     
-    for (int i = 1; i <= 3; ++i) {
+    for (int i = 1; i < 4; ++i) {
         idx = i;
         
-        for (int j = i + 1; j <= 3; ++j) {
-            if (candidate[idx].sum < candidate[j].sum) {
+        for (int j = i + 1; j < 4; ++j) {
+            if (person[idx]->sum > person[j]->sum);
+            else if (person[idx]->sum == person[j]->sum && person[idx]->cnt[3] > person[j]->cnt[3]);
+            else if (person[idx]->sum == person[j]->sum && person[idx]->cnt[3] == person[j]->cnt[3] && person[idx]->cnt[2] > person[j]->cnt[2]);
+            else {
                 idx = j;
             }
         }
         
-        temp = candidate[i];
-        
-        for (int j = 1; j <= 3; ++j) {
-            temp.base[j] = candidate[i].base[j];
+        if (idx == i) {
+            continue;
         }
         
-        candidate[i] = candidate[idx];
-        
-        for (int j = 1; j <= 3; ++j) {
-            candidate[i].base[j] = candidate[idx].base[j];
-        }
-        
-        candidate[idx] = temp;
-        
-        for (int j = 1; j <= 3; ++j) {
-            candidate[idx].base[j] = temp.base[j];
-        }
+        person[0] = person[i];
+        person[i] = person[idx];
+        person[idx] = person[0];
     }
     
-    if (candidate[1].sum == candidate[2].sum) {
-        int i;
-        
-        for (i = 3; i > 1; --i) {
-            if (candidate[1].base[i] == candidate[2].base[i]) {
-                continue;
-            }
-            
-            k = (candidate[1].base[i] > candidate[2].base[i]) ? 1 : 2;
-            
-            printf("%d %d", candidate[k].no, candidate[k].sum);
-            break;
-        }
-        
-        if (i == 1) {
-            printf("0 %d", candidate[1].sum);
-        }
-    }
+    if (person[1]->sum > person[2]->sum);
+    else if (person[1]->sum == person[2]->sum && person[1]->cnt[3] > person[2]->cnt[3]);
+    else if (person[1]->sum == person[2]->sum && person[1]->cnt[3] == person[2]->cnt[3] && person[1]->cnt[2] > person[2]->cnt[2]);
     else {
-        printf("%d %d", candidate[1].no, candidate[1].sum);
+        return _print(person, 0);
+    }
+    
+    return _print(person, person[1]->num);
+}
+
+int _print(Person* person[], int num) {
+    printf("%d %d", num, person[1]->sum);
+    
+    for (int i = 1; i < 4; ++i) {
+        free(person[i]);
     }
     
     return 0;
