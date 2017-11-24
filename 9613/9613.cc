@@ -5,7 +5,8 @@ int getGCD(int, int);
 
 int main() {
     int arr[128];
-    int t, n, sum;
+    long long sum;
+    int t, n;
     
     scanf("%d", &t);
     
@@ -25,7 +26,7 @@ int main() {
             }
         }
         
-        printf("%d\n", sum);
+        printf("%lld\n", sum);
     }
     
     return 0;
